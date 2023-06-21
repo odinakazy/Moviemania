@@ -1,2 +1,1 @@
-Moviemania APP
-A place for comfort and relaxation
+Moviemania APp , A place for comfort and relaxation
