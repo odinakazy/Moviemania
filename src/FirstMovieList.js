@@ -1,10 +1,13 @@
 import React from "react";
 import Movie from "./Movie";
-function FirstMovieList(props) {
+function FirstMovieList({ movies, onSelectedId }) {
+  // const Handler2 = (id) => {
+  //   onSelectedId(id);
+  // };
   return (
-    <ul className="list">
-      {props.movies?.map((movie) => (
-        <Movie key={movie.imdbID} movies={movie} />
+    <ul className="list list-movies">
+      {movies?.map((movie) => (
+        <Movie key={movie.imdbID} movies={movie} onSelectedId={onSelectedId} />
       ))}
     </ul>
   );

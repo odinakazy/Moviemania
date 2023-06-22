@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import MovieSummary from "./MovieSummary";
 import WatchedList from "./WatchedList";
+import MoviesDetails from "./MoviesDetails";
+
 const tempWatchedData = [
   {
     imdbID: "tt1375666",
@@ -25,7 +27,7 @@ const tempWatchedData = [
   },
 ];
 
-function SecondMovieCard() {
+function SecondMovieCard({ selectedId, onClose }) {
   const [watched, setWatched] = useState(tempWatchedData);
 
   const [isOpen2, setIsOpen2] = useState(true);
@@ -47,13 +49,19 @@ function SecondMovieCard() {
       </button>
       {isOpen2 && (
         <>
-          <MovieSummary
-            avgImdbRating={avgImdbRating}
-            avgUserRating={avgUserRating}
-            avgRuntime={avgRuntime}
-            watched={watched}
-          />
-          <WatchedList watched={watched} />
+          {selectedId ? (
+            <MoviesDetails selectedId={selectedId} onClose={onClose} />
+          ) : (
+            <>
+              <MovieSummary
+                avgImdbRating={avgImdbRating}
+                avgUserRating={avgUserRating}
+                avgRuntime={avgRuntime}
+                watched={watched}
+              />
+              <WatchedList watched={watched} />
+            </>
+          )}
         </>
       )}
     </>

@@ -1,8 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import FirstMovieList from "./FirstMovieList";
-function FirstMovieCard(props) {
+function FirstMovieCard({ movies, onSelectedId }) {
   const [isOpen1, setIsOpen1] = useState(true);
+  // const Handler3 = (id) => {
+  //   onSelectedId(id);
+  // };
   return (
     <>
       <button
@@ -11,7 +14,9 @@ function FirstMovieCard(props) {
       >
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <FirstMovieList movies={props.movies} />}
+      {isOpen1 && (
+        <FirstMovieList movies={movies} onSelectedId={onSelectedId} />
+      )}
     </>
   );
 }

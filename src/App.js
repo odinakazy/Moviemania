@@ -30,49 +30,70 @@ import Error from "./Error";
 // ];
 // const KEY = "ae76cf74";
 // const url = 'http://www.omdbapi.com/?apikey=ae76cf74&s=hukiokjukjh';
-const url = "https://www.omdbapi.com/?apikey=ae76cf74&s=interstellar";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("interstellar");
+  const [selectedId, setSelectedId] = useState(null);
+  // const url = `https://www.omdbapi.com/?apikey=ae76cf74&s=${query}`;
+  const Handler4 = (id) => {
+    setSelectedId((selectedId) => (selectedId === id ? null : id));
+  };
+  const closeHandler = () => {
+    setSelectedId(null);
+  };
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
 
-        const res = await fetch(url);
+          const res = await fetch(
+            `https://www.omdbapi.com/?apikey=ae76cf74&s=${query}`
+          );
 
-        const data = await res.json();
-        if (data.Response === "False") {
-          setError(data.Error);
-          return;
+          const data = await res.json();
+
+          if (data.Response === "False") {
+            setError("Movie not found");
+            return;
+          }
+
+          setMovies(data.Search);
+        } catch (err) {
+          console.error(err.message);
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
         }
-
-        setMovies(data.Search);
-      } catch (err) {
-        // console.error(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
       }
-    }
-
-    fetchMovies();
-  }, []);
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+      fetchMovies();
+    },
+    [query]
+  );
   return (
     <>
-      <Nav movies={movies} />
+      <Nav movies={movies} query={query} setQuery={setQuery} />
       <main className="main">
         <Box>
           {/* {isLoading ? <Loader /> : <FirstMovieCard movies={movies} />} */}
           {isLoading && <Loader />}
-          {!isLoading && !error && <FirstMovieCard movies={movies} />}
+          {!isLoading && !error && (
+            <FirstMovieCard movies={movies} onSelectedId={Handler4} />
+          )}
           {error && <Error message={error} />}
         </Box>
         <Box>
-          <SecondMovieCard />
+          <SecondMovieCard selectedId={selectedId} onClose={closeHandler} />
         </Box>
       </main>
     </>

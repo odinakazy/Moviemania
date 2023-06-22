@@ -3,13 +3,14 @@ import Star from "./Star";
 const container = {
   display: "flex",
   //   alignItem: "center",
-  gap: "16px",
+  gap: "8px",
+  marginTop: "1.5rem",
 };
 const star = {
   display: "flex",
 };
 
-function StarRating({ maxRating = 5, color, onRate }) {
+function StarRating({ maxRating = 5, color }) {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
   const paragraph = {
@@ -18,7 +19,6 @@ function StarRating({ maxRating = 5, color, onRate }) {
   };
   const add = (rating) => {
     setRating(rating);
-    onRate(rating);
   };
 
   return (
@@ -40,7 +40,5 @@ function StarRating({ maxRating = 5, color, onRate }) {
     </div>
   );
 }
-localStorage.setItem("items", JSON.stringify([1, 2, 3]));
-const data = JSON.parse(localStorage.getItem("items"));
-console.log(data);
+
 export default StarRating;

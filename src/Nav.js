@@ -1,7 +1,5 @@
 import React from "react";
-import { useState } from "react";
-function Nav(props) {
-  const [query, setQuery] = useState("");
+function Nav({ query, setQuery, movies }) {
   return (
     <nav className="nav-bar">
       <div className="logo">
@@ -16,7 +14,7 @@ function Nav(props) {
         onChange={(e) => setQuery(e.target.value)}
       />
       <p className="num-results">
-        Found <strong>{props.movies.length}</strong> results
+        Found <strong>{movies.length}</strong> results
       </p>
     </nav>
   );
