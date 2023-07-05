@@ -4,31 +4,31 @@ import MovieSummary from "./MovieSummary";
 import WatchedList from "./WatchedList";
 import MoviesDetails from "./MoviesDetails";
 
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
+// const tempWatchedData = [
+//   {
+//     imdbID: "tt1375666",
+//     Title: "Inception",
+//     Year: "2010",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+//     runtime: 148,
+//     imdbRating: 8.8,
+//     userRating: 10,
+//   },
+//   {
+//     imdbID: "tt0088763",
+//     Title: "Back to the Future",
+//     Year: "1985",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+//     runtime: 116,
+//     imdbRating: 8.5,
+//     userRating: 9,
+//   },
+// ];
 
 function SecondMovieCard({ selectedId, onClose }) {
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
 
   const [isOpen2, setIsOpen2] = useState(true);
 
@@ -39,6 +39,16 @@ function SecondMovieCard({ selectedId, onClose }) {
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
 
+  const addfxn = (movies) => {
+    setWatched((watched) => [...watched, movies]);
+  };
+
+  const deleteHandler = (id) => {
+    // console.log(id);
+    setWatched((WatchedMovie) =>
+      WatchedMovie.filter((watched) => watched.imdbID !== id)
+    );
+  };
   return (
     <>
       <button
@@ -50,7 +60,12 @@ function SecondMovieCard({ selectedId, onClose }) {
       {isOpen2 && (
         <>
           {selectedId ? (
-            <MoviesDetails selectedId={selectedId} onClose={onClose} />
+            <MoviesDetails
+              selectedId={selectedId}
+              onClose={onClose}
+              onAddWatchMovie={addfxn}
+              watched={watched}
+            />
           ) : (
             <>
               <MovieSummary
@@ -59,7 +74,7 @@ function SecondMovieCard({ selectedId, onClose }) {
                 avgRuntime={avgRuntime}
                 watched={watched}
               />
-              <WatchedList watched={watched} />
+              <WatchedList watched={watched} onDelete={deleteHandler} />
             </>
           )}
         </>

@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useLayoutEffect } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
-function MoviesDetails({ selectedId, onClose }) {
+function MoviesDetails({ selectedId, onClose, onAddWatchMovie, watched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState(0);
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const isWatchedRating = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
+
   const {
     Title: title,
     Year: year,
@@ -27,6 +33,7 @@ function MoviesDetails({ selectedId, onClose }) {
         );
 
         const data = await res.json();
+        console.log(data);
         setMovie(data);
         setIsLoading(false);
       }
@@ -34,6 +41,31 @@ function MoviesDetails({ selectedId, onClose }) {
     },
     [selectedId]
   );
+  useEffect(() => {
+    document.title = title;
+
+    return () => {
+      // Perform cleanup tasks here
+      document.title = "Moviemania App";
+    };
+  }, [title]);
+  const rateHandler = (rate) => {
+    setUserRating(rate);
+  };
+  const addWatchMoviesHandler = () => {
+    const newWatchedMovies = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: +imdbRating,
+      runtime: +runtime.split(" ").at(0),
+      userRating,
+    };
+    onAddWatchMovie(newWatchedMovies);
+    onClose();
+  };
+
   return (
     <>
       {isLoading ? (
@@ -63,7 +95,27 @@ function MoviesDetails({ selectedId, onClose }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={5} color="#fcc419" />
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={5}
+                    color="#fcc419"
+                    onRating={rateHandler}
+                  />
+
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={addWatchMoviesHandler}>
+                      Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  you rated this movie <span>{isWatchedRating}</span>{" "}
+                  <span>⭐️</span>
+                </p>
+              )}
             </div>
             <p>
               <em>{plot}</em>

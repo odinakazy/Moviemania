@@ -10,7 +10,7 @@ const star = {
   display: "flex",
 };
 
-function StarRating({ maxRating = 5, color }) {
+function StarRating({ maxRating = 5, color, onRating }) {
   const [rating, setRating] = useState(0);
   const [tempRating, setTempRating] = useState(0);
   const paragraph = {
@@ -19,6 +19,7 @@ function StarRating({ maxRating = 5, color }) {
   };
   const add = (rating) => {
     setRating(rating);
+    onRating(rating);
   };
 
   return (

@@ -1,10 +1,13 @@
 import React from "react";
 
 function WatchedMovie(props) {
+  const onDeleteHndler = () => {
+    props.onDelete(props.movie.imdbID);
+  };
   return (
     <li>
-      <img src={props.movie.Poster} alt={`${props.movie.Title} poster`} />
-      <h3>{props.movie.Title}</h3>
+      <img src={props.movie.poster} alt={`${props.movie.title} poster`} />
+      <h3>{props.movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
@@ -18,6 +21,9 @@ function WatchedMovie(props) {
           <span>⏳</span>
           <span>{props.movie.runtime} min</span>
         </p>
+        <button onClick={onDeleteHndler} className="btn-delete">
+          X
+        </button>
       </div>
     </li>
   );

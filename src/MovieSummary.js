@@ -11,15 +11,15 @@ function MovieSummary(props) {
         </p>
         <p>
           <span>⭐️</span>
-          <span>{props.avgImdbRating}</span>
+          <span>{props.avgImdbRating.toFixed(2)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{props.avgUserRating}</span>
+          <span>{props.avgUserRating.toFixed(2)}</span>
         </p>
         <p>
           <span>⏳</span>
-          <span>{props.avgRuntime} min</span>
+          <span>{props.avgRuntime.toFixed(2)} min</span>
         </p>
       </div>
     </div>
